@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmer Login</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Arial", sans-serif;
+    background: url("farm.jpg") no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0; left: 0;
+    right: 0; bottom: 0;
+    background: rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  /* Minimalistic glassy Home button at bottom-left */
+  .home-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    animation: homeEnter 1s ease forwards;
+    opacity: 0;
+  }
+
+  .home-btn img {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+
+  .home-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #5f9e34, 0 0 15px #5f9e34;
+    background: rgba(255,255,255,0.2);
+  }
+
+  .home-btn:hover img {
+    transform: scale(1.2);
+  }
+
+  @keyframes homeEnter {
+    from { opacity: 0; transform: translateY(20px) scale(0.8); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Glass effect login box */
+  .login-box {
+    position: relative;
+    z-index: 10;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 30px;
+    width: 320px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    text-align: center;
+
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+    animation: boxEnter 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  }
+
+  @keyframes boxEnter {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .login-box h2 {
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 24px;
+  }
+
+  .login-box img {
+    width: 60px;
+    margin-bottom: 15px;
+    animation: float 3s ease-in-out infinite, scaleIcon 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes scaleIcon {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .input-group {
+    margin-bottom: 15px;
+    text-align: left;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeSlide 1s ease forwards;
+  }
+
+  .input-group:nth-child(1) { animation-delay: 0.8s; }
+  .input-group:nth-child(2) { animation-delay: 0.9s; }
+
+  @keyframes fadeSlide {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+    font-size: 14px;
+    transition: 0.3s all;
+    backdrop-filter: blur(5px);
+  }
+
+  .input-group input::placeholder {
+    color: #eee;
+  }
+
+  .input-group input:focus {
+    outline: none;
+    border-color: #5f9e34;
+    box-shadow: 0 0 10px #5f9e34;
+    transform: scale(1.05);
+    background: rgba(255,255,255,0.3);
+  }
+
+  /* Glass-style animated login button */
+  .btn {
+    display: inline-block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    font-size: 16px;
+    color: #fff;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 12px;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    animation: fadeSlide 1s ease forwards;
+    animation-delay: 1s;
+  }
+
+  .btn::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255,255,255,0.1);
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+  }
+
+  .btn:hover::before {
+    top: 0;
+    left: 0;
+  }
+
+  .btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px #5f9e34, 0 0 25px #5f9e34;
+    background: rgba(255,255,255,0.2);
+  }
+
+  .extra-links {
+    margin-top: 15px;
+    font-size: 13px;
+    opacity: 0;
+    animation: fadeSlide 1s ease forwards;
+    animation-delay: 1.2s;
+  }
+
+  .extra-links a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s, transform 0.2s;
+  }
+
+  .extra-links a:hover {
+    text-decoration: underline;
+    color: #a5d27c;
+    transform: scale(1.05);
+  }
+
+</style>
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <!-- Minimalistic glass Home button at bottom-left -->
+  <a href="index.html" class="home-btn" title="Home">
+    <img src="https://img.icons8.com/ios-filled/50/ffffff/home.png" alt="Home">
+  </a>
+
+  <div class="login-box">
+    <img src="https://img.icons8.com/ios-filled/100/ffffff/tractor.png" alt="Tractor Icon">
+    <h2>Farmer Login</h2>
+    <form>
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter your name" required>
+      </div>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="btn">Login</button>
+    </form>
+    <div class="extra-links">
+      <p><a href="forgot.html">Forgot Password?</a></p>
+      <p><a href="register.html">New User? Register Here</a></p>
+    </div>
+  </div>
+</body>
+</html>
